@@ -98,7 +98,7 @@ namespace Hub_Joystick.Components
                         }
                         catch (Exception ex)
                         {
-                            MessageBox.Show($"Failed to open Steam Big Picture Mode: {ex.Message}");
+                            MessageBox.Show($"falha erro: {ex.Message}");
                         }
                         break;
                     case 2:
@@ -108,8 +108,11 @@ namespace Hub_Joystick.Components
                         Process.Start(new ProcessStartInfo("https://www.primevideo.com") { UseShellExecute = true });
                         break;
                 }
+
+                Application.Exit();
             }
         }
+
 
 
         public void PositionButtons()

@@ -11,6 +11,7 @@ The primary goal of HUB is to give users full control of their PC using an Xbox 
 ## Features
 
 - **Open Applications**: Launch applications like Xbox Game Bar, Steam, and others directly from the HUB.
+- **Close the App**: Close the software with the 'X' button or when executed action from the main buttons.
 - **Web URLs**: Open web URLs in default browsers or specific applications.
 - **Controller Navigation**: Navigate through the HUB using the Xbox controller's D-pad and select items with the 'A' button.
 - **Highlight Selection**: The currently selected button is highlighted and enlarged for better visibility.

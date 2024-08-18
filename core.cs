@@ -57,6 +57,7 @@ namespace Hub_Joystick
                         if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft) ||
                             state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight) ||
                             state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp) ||
+                            state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.X) ||
                             state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown))
                         {
                             Invoke((Action)(() => HandleControllerInput(state.Gamepad.Buttons)));
@@ -93,6 +94,11 @@ namespace Hub_Joystick
                     SwitchToTopMenu();
                 }
             }
+            else if (buttons.HasFlag(GamepadButtonFlags.X))
+            {
+                //MessageBox.Show("btn ok");
+                CloseApplication();
+            }
             else
             {
                 if (isTopMenu)
@@ -105,6 +111,7 @@ namespace Hub_Joystick
                 }
             }
         }
+
 
         private void ExecuteAction()
         {
@@ -138,6 +145,11 @@ namespace Hub_Joystick
             appMenu.BringToFront();
             appMenu.Show(); 
             topMenu.Hide(); 
+        }
+
+        private void CloseApplication()
+        {
+            Application.Exit();
         }
     }
 }
