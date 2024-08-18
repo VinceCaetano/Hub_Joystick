@@ -81,7 +81,6 @@ namespace Hub_Joystick
                 btn.Click += Button_Click;
             }
 
-            // Add the power button
             powerButton = new Button
             {
                 Size = new Size(200, 75),
