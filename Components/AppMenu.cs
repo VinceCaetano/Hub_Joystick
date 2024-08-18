@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using SharpDX.XInput;
-using System.Diagnostics;
 
 namespace Hub_Joystick.Components
 {
@@ -37,32 +37,26 @@ namespace Hub_Joystick.Components
                     Location = new Point(spacing + (buttonWidth + spacing) * i, 10),
                     BackgroundImage = Image.FromFile(System.IO.Path.Combine(Application.StartupPath, "assets", imageFiles[i])),
                     BackgroundImageLayout = ImageLayout.Stretch,
-                    FlatStyle = FlatStyle.Flat,
-                    FlatAppearance = { BorderSize = 0 }
+                    FlatStyle = FlatStyle.Flat
                 };
-               
+                buttons[i].FlatAppearance.BorderSize = 0; 
                 this.Controls.Add(buttons[i]);
             }
 
             this.Size = new Size(400, 150);
-            HighlightSelectedButton(); 
         }
 
         public void MoveSelection(GamepadButtonFlags buttons)
         {
             const int totalButtons = 4;
 
-            Debug.WriteLine($"Ação btn: {buttons}");
-
             if (buttons.HasFlag(GamepadButtonFlags.DPadLeft))
             {
-                Debug.WriteLine("DPad L");
                 selectedIndex = (selectedIndex - 1 + totalButtons) % totalButtons;
                 HighlightSelectedButton();
             }
             else if (buttons.HasFlag(GamepadButtonFlags.DPadRight))
             {
-                Debug.WriteLine("DPad R");
                 selectedIndex = (selectedIndex + 1) % totalButtons;
                 HighlightSelectedButton();
             }
@@ -70,27 +64,17 @@ namespace Hub_Joystick.Components
 
         private void HighlightSelectedButton()
         {
-            int buttonWidth = 100;
-            int buttonHeight = 100;
-            int selectedButtonWidth = 120;
-            int selectedButtonHeight = 120;
-            int spacing = 10;
-
             foreach (var button in buttons)
             {
-                button.BackColor = Color.LightGray; 
-                button.Size = new Size(buttonWidth, buttonHeight); 
-                button.FlatAppearance.BorderSize = 0; 
+                button.BackColor = Color.LightGray;
+                button.Size = new Size(100, 100);
             }
 
             if (buttons.Length > 0)
             {
-                buttons[selectedIndex].BackColor = Color.DarkGray;
-                buttons[selectedIndex].Size = new Size(selectedButtonWidth, selectedButtonHeight);
-
-                
-                int newX = (this.Width / buttons.Length) * selectedIndex + spacing;
-                buttons[selectedIndex].Location = new Point(newX + (buttonWidth - selectedButtonWidth) / 2, 10);
+                var selectedButton = buttons[selectedIndex];
+                selectedButton.BackColor = Color.DarkGray;
+                selectedButton.Size = new Size(120, 120); 
             }
         }
 
@@ -98,9 +82,35 @@ namespace Hub_Joystick.Components
         {
             if (buttons.Length > 0)
             {
-                buttons[selectedIndex].PerformClick();
+                switch (selectedIndex)
+                {
+                    case 0:
+                        Process.Start("C:\\Program Files\\WindowsApps\\Microsoft.XboxGamingOverlay_7.124.5142.0_x64__8wekyb3d8bbwe\\GameBar.exe");
+                        break;
+                    case 1:
+                        try
+                        {
+                            Process.Start(new ProcessStartInfo
+                            {
+                                FileName = "steam://open/bigpicture",
+                                UseShellExecute = true
+                            });
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Failed to open Steam Big Picture Mode: {ex.Message}");
+                        }
+                        break;
+                    case 2:
+                        Process.Start(new ProcessStartInfo("https://www.netflix.com") { UseShellExecute = true });
+                        break;
+                    case 3:
+                        Process.Start(new ProcessStartInfo("https://www.primevideo.com") { UseShellExecute = true });
+                        break;
+                }
             }
         }
+
 
         public void PositionButtons()
         {
@@ -117,5 +127,6 @@ namespace Hub_Joystick.Components
             this.Width = this.Parent.ClientSize.Width;
             this.Height = this.Parent.ClientSize.Height - this.Top;
         }
+
     }
 }

@@ -31,7 +31,7 @@ namespace Hub_Joystick.Components
                 FlatStyle = FlatStyle.Flat
             };
             powerButton.FlatAppearance.BorderSize = 0; 
-            powerButton.Click += (sender, e) => MessageBox.Show("Controller turned off.");
+            powerButton.Click += (sender, e) => MessageBox.Show("controle desligado");
 
             turnOffNotebookButton = new Button
             {
@@ -42,7 +42,7 @@ namespace Hub_Joystick.Components
                 FlatStyle = FlatStyle.Flat
             };
             turnOffNotebookButton.FlatAppearance.BorderSize = 0;
-            turnOffNotebookButton.Click += (sender, e) => MessageBox.Show("Notebook turned off.");
+            turnOffNotebookButton.Click += (sender, e) => MessageBox.Show("fechar todas as abas e desligar notebook");
 
             this.Controls.Add(powerButton);
             this.Controls.Add(turnOffNotebookButton);
