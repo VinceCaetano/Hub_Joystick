@@ -48,6 +48,9 @@ The HUB application is currently under construction. Features and functionality 
 
 ## Future Updates
 
+- **Somehow turning off your controller from it.
+- **Steam Big Picture Mode**: Planned enhancements to fully support launching Steam in Big Picture Mode.
+- **Web URL Controller Mapping**: Ongoing development to map the controller for better web navigation.
 - **Enhanced Controller Support**: Improving recognition and control features for the Xbox controller.
 - **More Applications**: Adding support for additional applications and custom URLs.
 - **User Interface Enhancements**: Further refinements to the UI for a more polished experience.
