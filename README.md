@@ -58,7 +58,7 @@ The HUB application is currently under construction. Features and functionality 
 
 ## Contact
 
-For issues, suggestions, or contributions, please leave your suggetins at the issues tab.
+For issues, suggestions, or contributions, please leave your suggetions at the issues tab.
 
 ## License
 
