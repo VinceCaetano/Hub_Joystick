@@ -14,16 +14,16 @@ namespace Hub_Joystick
         private static readonly HttpClient httpClient = new HttpClient();
         private Controller controller;
         private Button[] buttons;
-        private Button powerButton; // Button for turning off the controller
-        private int selectedIndex = 0; // Track the currently selected button
-        private bool isPowerButtonSelected = false; // Track if the power button is selected
+        private Button powerButton; 
+        private int selectedIndex = 0; 
+        private bool isPowerButtonSelected = false; 
 
         private string[] exePaths = new string[]
         {
             @"C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.124.5142.0_x64__8wekyb3d8bbwe\GameBar.exe",
             @"C:\Program Files (x86)\Steam\Steam.exe -bigpicture",
-            "firefox", // Placeholder for Firefox
-            "firefox"  // Placeholder for Firefox
+            "firefox", /
+            "firefox"  
         };
 
         private string[] appArguments = new string[]
@@ -39,7 +39,7 @@ namespace Hub_Joystick
             InitializeComponent();
             LoadImagesAsync();
             this.Resize += Form1_Resize;
-            this.controller = new Controller(UserIndex.One); // Initialize Xbox controller
+            this.controller = new Controller(UserIndex.One); 
         }
 
         private async void LoadImagesAsync()
@@ -57,7 +57,7 @@ namespace Hub_Joystick
             for (int i = 0; i < imageUrls.Length; i++)
             {
                 Button btn = new Button();
-                btn.Size = new Size(150, 100); // Initial rectangular button size
+                btn.Size = new Size(150, 100); 
                 btn.FlatStyle = FlatStyle.Flat;
                 btn.FlatAppearance.BorderSize = 0;
                 btn.BackgroundImageLayout = ImageLayout.Stretch;
@@ -77,7 +77,7 @@ namespace Hub_Joystick
 
                 this.Controls.Add(btn);
                 buttons[i] = btn;
-                btn.Tag = i; // Store index in Tag property
+                btn.Tag = i; 
                 btn.Click += Button_Click;
             }
 
@@ -93,7 +93,7 @@ namespace Hub_Joystick
             this.Controls.Add(powerButton);
 
             PositionButtons();
-            HighlightButton(selectedIndex); // Highlight the first button initially
+            HighlightButton(selectedIndex); 
             StartControllerMonitoring();
         }
 
@@ -110,7 +110,7 @@ namespace Hub_Joystick
                 buttons[i].Location = new Point(startX + i * (buttonWidth + spacing), (this.ClientSize.Height - buttonHeight) / 2 + 50);
             }
 
-            // Ensure the power button is positioned correctly
+            
             powerButton.Location = new Point(10, 10);
         }
 
@@ -127,29 +127,29 @@ namespace Hub_Joystick
                 {
                     var state = controller.GetState();
 
-                    // Handle D-pad navigation
+                   
                     if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft))
                     {
-                        Invoke((Action)(() => MoveSelection(-1))); // Move selection left
+                        Invoke((Action)(() => MoveSelection(-1)));
                     }
                     if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
                     {
-                        Invoke((Action)(() => MoveSelection(1))); // Move selection right
+                        Invoke((Action)(() => MoveSelection(1))); 
                     }
                     if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp))
                     {
-                        Invoke((Action)(SelectPowerButton)); // Move selection to the power button
+                        Invoke((Action)(SelectPowerButton));
                     }
                     if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown))
                     {
-                        Invoke((Action)(SelectAppButtons)); // Move selection back to app buttons
+                        Invoke((Action)(SelectAppButtons)); 
                     }
                     if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A))
                     {
-                        Invoke((Action)ExecuteAction); // Execute the selected action
+                        Invoke((Action)ExecuteAction); 
                     }
 
-                    // Small delay to reduce CPU usage
+                   
                     Task.Delay(100).Wait();
                 }
             });
@@ -159,7 +159,7 @@ namespace Hub_Joystick
         {
             if (isPowerButtonSelected)
             {
-                if (direction == -1) // Only move down from the power button
+                if (direction == -1)
                 {
                     selectedIndex = (selectedIndex + direction + buttons.Length) % buttons.Length;
                     isPowerButtonSelected = false;
@@ -168,7 +168,7 @@ namespace Hub_Joystick
             }
             else
             {
-                // Move selection left or right, looping around
+               
                 selectedIndex = (selectedIndex + direction + buttons.Length) % buttons.Length;
                 HighlightButton(selectedIndex);
             }
@@ -180,16 +180,16 @@ namespace Hub_Joystick
             {
                 int defaultWidth = 150;
                 int defaultHeight = 100;
-                int highlightedWidth = 170; // Larger size for highlighted button
+                int highlightedWidth = 170; 
                 int highlightedHeight = 120;
 
                 foreach (Button btn in buttons)
                 {
-                    btn.Size = new Size(defaultWidth, defaultHeight); // Reset button size
-                    btn.BackColor = Color.Transparent; // Reset button color
+                    btn.Size = new Size(defaultWidth, defaultHeight); 
+                    btn.BackColor = Color.Transparent; 
                 }
-                buttons[index].Size = new Size(highlightedWidth, highlightedHeight); // Larger size for highlighted button
-                buttons[index].BackColor = Color.LightGray; // Highlight selected button
+                buttons[index].Size = new Size(highlightedWidth, highlightedHeight); 
+                buttons[index].BackColor = Color.LightGray;
             }
         }
 
@@ -197,17 +197,17 @@ namespace Hub_Joystick
         {
             int defaultWidth = 150;
             int defaultHeight = 100;
-            int highlightedWidth = 200; // Larger size for highlighted power button
+            int highlightedWidth = 200; 
             int highlightedHeight = 75;
 
             foreach (Button btn in buttons)
             {
-                btn.Size = new Size(defaultWidth, defaultHeight); // Reset button size
-                btn.BackColor = Color.Transparent; // Reset button color
+                btn.Size = new Size(defaultWidth, defaultHeight); 
+                btn.BackColor = Color.Transparent; 
             }
 
-            powerButton.Size = new Size(highlightedWidth, highlightedHeight); // Larger size for highlighted power button
-            powerButton.BackColor = Color.LightGray; // Highlight power button
+            powerButton.Size = new Size(highlightedWidth, highlightedHeight); 
+            powerButton.BackColor = Color.LightGray; 
         }
 
         private void ExecuteAction()
@@ -231,7 +231,7 @@ namespace Hub_Joystick
                     string path = exePaths[index];
                     string arguments = appArguments[index];
 
-                    if (path == "firefox") // Placeholder for Firefox
+                    if (path == "firefox") 
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -240,7 +240,7 @@ namespace Hub_Joystick
                             UseShellExecute = true
                         });
                     }
-                    else if (path == "vlc") // Placeholder for VLC
+                    else if (path == "vlc") 
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -249,7 +249,7 @@ namespace Hub_Joystick
                             UseShellExecute = true
                         });
                     }
-                    else if (path == "steam") // Steam with Big Picture Mode
+                    else if (path == "steam") 
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -260,7 +260,7 @@ namespace Hub_Joystick
                     }
                     else
                     {
-                        // For general cases where path includes the executable
+                       
                         Process.Start(new ProcessStartInfo
                         {
                             FileName = path,
@@ -288,8 +288,8 @@ namespace Hub_Joystick
 
         private void PowerButton_Click(object sender, EventArgs e)
         {
-            // Implement actual controller shutdown logic here
-            MessageBox.Show("Controller turned off."); // Placeholder action
+           
+            MessageBox.Show("Controller turned off.");
         }
 
         private void SelectPowerButton()
