@@ -14,16 +14,17 @@ namespace Hub_Joystick
         private static readonly HttpClient httpClient = new HttpClient();
         private Controller controller;
         private Button[] buttons;
-        private Button powerButton; 
-        private int selectedIndex = 0; 
-        private bool isPowerButtonSelected = false; 
+        private Button powerButton;
+        private Button turnOffNotebookButton;
+        private int selectedIndex = 0;
+        private bool isPowerButtonSelected = false;
 
         private string[] exePaths = new string[]
         {
             @"C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.124.5142.0_x64__8wekyb3d8bbwe\GameBar.exe",
             @"C:\Program Files (x86)\Steam\Steam.exe -bigpicture",
-            "firefox", 
-            "firefox"  
+            "firefox",
+            "firefox"
         };
 
         private string[] appArguments = new string[]
@@ -37,47 +38,46 @@ namespace Hub_Joystick
         public Form1()
         {
             InitializeComponent();
-            LoadImagesAsync();
+            LoadImages();
             this.Resize += Form1_Resize;
-            this.controller = new Controller(UserIndex.One); 
+            this.controller = new Controller(UserIndex.One);
         }
 
-        private async void LoadImagesAsync()
+        private void LoadImages()
         {
-            string[] imageUrls = new string[]
+            string[] imagePaths = new string[]
             {
-                "https://observatoriodegames.uol.com.br/wp-content/uploads/2023/10/logo-xbox-1024x768.png",
-                "https://img.itch.zone/aW1nLzE0ODYzNTM3LnBuZw==/original/HpW3cn.png",
-                "https://i0.wp.com/assets.b9.com.br/wp-content/uploads/2016/06/netflix-logo-thumb.jpg",
-                "https://rollingstone.com.br/media/_versions/logo_prime_video_foto_reproducao_widelg.jpg"
+                @"assets\game_bar.png",
+                @"assets\steam.png",
+                @"assets\netflix.png",
+                @"assets\primevideo.png"
             };
 
-            buttons = new Button[imageUrls.Length];
+            buttons = new Button[imagePaths.Length];
 
-            for (int i = 0; i < imageUrls.Length; i++)
+            for (int i = 0; i < imagePaths.Length; i++)
             {
-                Button btn = new Button();
-                btn.Size = new Size(150, 100); 
-                btn.FlatStyle = FlatStyle.Flat;
-                btn.FlatAppearance.BorderSize = 0;
-                btn.BackgroundImageLayout = ImageLayout.Stretch;
+                Button btn = new Button
+                {
+                    Size = new Size(120, 120), 
+                    FlatStyle = FlatStyle.Flat,
+                    FlatAppearance = { BorderSize = 0 },
+                    BackgroundImageLayout = ImageLayout.Zoom 
+                };
 
                 try
                 {
-                    var imageData = await httpClient.GetByteArrayAsync(imageUrls[i]);
-                    using (var ms = new System.IO.MemoryStream(imageData))
-                    {
-                        btn.BackgroundImage = Image.FromStream(ms);
-                    }
+                    string fullPath = System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, imagePaths[i]);
+                    btn.BackgroundImage = Image.FromFile(fullPath);
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error loading image from {imageUrls[i]}: {ex.Message}");
+                    MessageBox.Show($"Error loading image from {imagePaths[i]}: {ex.Message}");
                 }
 
                 this.Controls.Add(btn);
                 buttons[i] = btn;
-                btn.Tag = i; 
+                btn.Tag = i;
                 btn.Click += Button_Click;
             }
 
@@ -91,9 +91,24 @@ namespace Hub_Joystick
             powerButton.Click += PowerButton_Click;
             this.Controls.Add(powerButton);
 
+            turnOffNotebookButton = new Button
+            {
+                Size = new Size(200, 75),
+                Location = new Point(powerButton.Right + 10, 10),
+                Text = "Turn Off Notebook",
+                BackColor = Color.LightGray
+            };
+            turnOffNotebookButton.Click += TurnOffNotebookButton_Click;
+            this.Controls.Add(turnOffNotebookButton);
+
             PositionButtons();
-            HighlightButton(selectedIndex); 
+            HighlightButton(selectedIndex);
             StartControllerMonitoring();
+        }
+
+        private void TurnOffNotebookButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Notebook turned off.");
         }
 
         private void PositionButtons()
@@ -109,8 +124,8 @@ namespace Hub_Joystick
                 buttons[i].Location = new Point(startX + i * (buttonWidth + spacing), (this.ClientSize.Height - buttonHeight) / 2 + 50);
             }
 
-            
             powerButton.Location = new Point(10, 10);
+            turnOffNotebookButton.Location = new Point(powerButton.Right + 10, 10);
         }
 
         private void Form1_Resize(object sender, EventArgs e)
@@ -124,31 +139,43 @@ namespace Hub_Joystick
             {
                 while (true)
                 {
-                    var state = controller.GetState();
+                    try
+                    {
+                        if (controller != null && controller.IsConnected) 
+                        {
+                            var state = controller.GetState();
 
-                   
-                    if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft))
-                    {
-                        Invoke((Action)(() => MoveSelection(-1)));
+                            if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadLeft))
+                            {
+                                Invoke((Action)(() => MoveSelection(-1)));
+                            }
+                            if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
+                            {
+                                Invoke((Action)(() => MoveSelection(1)));
+                            }
+                            if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp))
+                            {
+                                Invoke((Action)(SelectPowerButton));
+                            }
+                            if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown))
+                            {
+                                Invoke((Action)(SelectAppButtons));
+                            }
+                            if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A))
+                            {
+                                Invoke((Action)ExecuteAction);
+                            }
+                        }
+                        else
+                        {
+                            controller = new Controller(UserIndex.One);
+                        }
                     }
-                    if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadRight))
+                    catch (Exception ex)
                     {
-                        Invoke((Action)(() => MoveSelection(1))); 
-                    }
-                    if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadUp))
-                    {
-                        Invoke((Action)(SelectPowerButton));
-                    }
-                    if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.DPadDown))
-                    {
-                        Invoke((Action)(SelectAppButtons)); 
-                    }
-                    if (state.Gamepad.Buttons.HasFlag(GamepadButtonFlags.A))
-                    {
-                        Invoke((Action)ExecuteAction); 
+                        MessageBox.Show($"Error in controller monitoring: {ex.Message}");
                     }
 
-                   
                     Task.Delay(100).Wait();
                 }
             });
@@ -167,7 +194,6 @@ namespace Hub_Joystick
             }
             else
             {
-               
                 selectedIndex = (selectedIndex + direction + buttons.Length) % buttons.Length;
                 HighlightButton(selectedIndex);
             }
@@ -179,15 +205,16 @@ namespace Hub_Joystick
             {
                 int defaultWidth = 150;
                 int defaultHeight = 100;
-                int highlightedWidth = 170; 
+                int highlightedWidth = 170;
                 int highlightedHeight = 120;
 
                 foreach (Button btn in buttons)
                 {
-                    btn.Size = new Size(defaultWidth, defaultHeight); 
-                    btn.BackColor = Color.Transparent; 
+                    btn.Size = new Size(defaultWidth, defaultHeight);
+                    btn.BackColor = Color.Transparent;
                 }
-                buttons[index].Size = new Size(highlightedWidth, highlightedHeight); 
+
+                buttons[index].Size = new Size(highlightedWidth, highlightedHeight);
                 buttons[index].BackColor = Color.LightGray;
             }
         }
@@ -196,17 +223,17 @@ namespace Hub_Joystick
         {
             int defaultWidth = 150;
             int defaultHeight = 100;
-            int highlightedWidth = 200; 
+            int highlightedWidth = 200;
             int highlightedHeight = 75;
 
             foreach (Button btn in buttons)
             {
-                btn.Size = new Size(defaultWidth, defaultHeight); 
-                btn.BackColor = Color.Transparent; 
+                btn.Size = new Size(defaultWidth, defaultHeight);
+                btn.BackColor = Color.Transparent;
             }
 
-            powerButton.Size = new Size(highlightedWidth, highlightedHeight); 
-            powerButton.BackColor = Color.LightGray; 
+            powerButton.Size = new Size(highlightedWidth, highlightedHeight);
+            powerButton.BackColor = Color.LightGray;
         }
 
         private void ExecuteAction()
@@ -230,7 +257,7 @@ namespace Hub_Joystick
                     string path = exePaths[index];
                     string arguments = appArguments[index];
 
-                    if (path == "firefox") 
+                    if (path == "firefox")
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -239,7 +266,7 @@ namespace Hub_Joystick
                             UseShellExecute = true
                         });
                     }
-                    else if (path == "vlc") 
+                    else if (path == "vlc")
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -248,7 +275,7 @@ namespace Hub_Joystick
                             UseShellExecute = true
                         });
                     }
-                    else if (path == "steam") 
+                    else if (path == "steam")
                     {
                         Process.Start(new ProcessStartInfo
                         {
@@ -259,7 +286,6 @@ namespace Hub_Joystick
                     }
                     else
                     {
-                       
                         Process.Start(new ProcessStartInfo
                         {
                             FileName = path,
@@ -287,7 +313,6 @@ namespace Hub_Joystick
 
         private void PowerButton_Click(object sender, EventArgs e)
         {
-           
             MessageBox.Show("Controller turned off.");
         }
 
