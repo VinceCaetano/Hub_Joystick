@@ -48,6 +48,7 @@ The HUB application is currently under construction. Features and functionality 
 
 ## Future Updates
 
+- ** Error handling for opening apps you don´t have or controller not connected.
 - **Somehow turning off your controller from it.
 - **Steam Big Picture Mode**: Planned enhancements to fully support launching Steam in Big Picture Mode.
 - **Web URL Controller Mapping**: Ongoing development to map the controller for better web navigation.
