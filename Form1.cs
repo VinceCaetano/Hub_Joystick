@@ -22,7 +22,7 @@ namespace Hub_Joystick
         {
             @"C:\Program Files\WindowsApps\Microsoft.XboxGamingOverlay_7.124.5142.0_x64__8wekyb3d8bbwe\GameBar.exe",
             @"C:\Program Files (x86)\Steam\Steam.exe -bigpicture",
-            "firefox", /
+            "firefox", 
             "firefox"  
         };
 
