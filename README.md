@@ -27,7 +27,8 @@ The primary goal of HUB is to give users full control of their PC using an Xbox 
 
 1. **Install JoyToKey**: [Download JoyToKey](https://joytokey.net/en/) and set it up to map the Xbox controller buttons to launch the HUB application.
 2. **Add Paths**: Update the `exePaths` and `appArguments` arrays in the `Form1` class to specify the paths to your applications and web URLs.
-3. **Build and Run**: Build the application using Visual Studio and run it.
+3. **.NET Version**: Ensure you have .NET 6.0 installed as the HUB application is built using .NET 6.0 Windows Forms.
+4. **Build and Run**: Build the application using Visual Studio and run it.
 
 ### Running the Executable
 
