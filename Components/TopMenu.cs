@@ -23,54 +23,60 @@ namespace Hub_Joystick.Components
         }
 
         private void InitializeComponents()
-        {
-            powerButton = new Button
-            {
-                Size = new Size(100, 75),
-                Text = "Power",
-                BackColor = Color.LightGray,
-                FlatStyle = FlatStyle.Flat
-            };
-            powerButton.FlatAppearance.BorderSize = 0;
-            powerButton.Click += (sender, e) => MessageBox.Show("Power clicked");
+{
+    powerButton = new Button
+    {
+        Size = new Size(100, 75),
+        Location = new Point(10, 10),
+        Text = "Power",
+        BackColor = Color.LightGray,
+        FlatStyle = FlatStyle.Flat
+    };
+    powerButton.FlatAppearance.BorderSize = 0;
+    powerButton.Click += (sender, e) => MessageBox.Show("Power clicked");
 
-            controllerButton = new Button
-            {
-                Size = new Size(100, 75),
-                Text = "Controller",
-                BackColor = Color.LightGray,
-                FlatStyle = FlatStyle.Flat
-            };
-            controllerButton.FlatAppearance.BorderSize = 0;
-            controllerButton.Click += (sender, e) => MessageBox.Show("Controller clicked");
+    controllerButton = new Button
+    {
+        Size = new Size(100, 75),
+        Location = new Point(powerButton.Right + 10, 10),
+        Text = "Controller",
+        BackColor = Color.LightGray,
+        FlatStyle = FlatStyle.Flat
+    };
+    controllerButton.FlatAppearance.BorderSize = 0;
+    controllerButton.Click += (sender, e) => MessageBox.Show("Controller clicked");
 
-            batteryButton = new Button
-            {
-                Size = new Size(100, 75),
-                Text = "Battery",
-                BackColor = Color.LightGray,
-                FlatStyle = FlatStyle.Flat
-            };
-            batteryButton.FlatAppearance.BorderSize = 0;
-            batteryButton.Click += (sender, e) => MessageBox.Show("Battery clicked");
+    batteryButton = new Button
+    {
+        Size = new Size(100, 75),
+        Location = new Point(this.Width - 200, 10),
+        Text = "Battery",
+        BackColor = Color.LightGray,
+        FlatStyle = FlatStyle.Flat
+    };
+    batteryButton.FlatAppearance.BorderSize = 0;
+    batteryButton.Click += (sender, e) => MessageBox.Show("Battery clicked");
 
-            timeButton = new Button
-            {
-                Size = new Size(100, 75),
-                Text = "Time",
-                BackColor = Color.LightGray,
-                FlatStyle = FlatStyle.Flat
-            };
-            timeButton.FlatAppearance.BorderSize = 0;
-            timeButton.Click += (sender, e) => MessageBox.Show("Time clicked");
+    timeButton = new Button
+    {
+        Size = new Size(100, 75),
+        Location = new Point(this.Width - 100, 10),
+        Text = "Time",
+        BackColor = Color.LightGray,
+        FlatStyle = FlatStyle.Flat
+    };
+    timeButton.FlatAppearance.BorderSize = 0;
+    timeButton.Click += (sender, e) => MessageBox.Show("Time clicked");
 
-            this.Controls.Add(powerButton);
-            this.Controls.Add(controllerButton);
-            this.Controls.Add(batteryButton);
-            this.Controls.Add(timeButton);
+    this.Controls.Add(powerButton);
+    this.Controls.Add(controllerButton);
+    this.Controls.Add(batteryButton);
+    this.Controls.Add(timeButton);
 
-            buttons = new[] { powerButton, controllerButton, batteryButton, timeButton };
-        }
+    this.BackColor = Color.Transparent; 
+    PositionButtons();
+}
+
 
         public void MoveSelection(GamepadButtonFlags buttons)
         {
@@ -146,13 +152,6 @@ namespace Hub_Joystick.Components
             this.Invalidate(); 
         }
 
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            base.OnPaint(e);
-            using (var brush = new LinearGradientBrush(this.ClientRectangle, Color.Blue, Color.DarkBlue, LinearGradientMode.Vertical))
-            {
-                e.Graphics.FillRectangle(brush, this.ClientRectangle);
-            }
-        }
+      
     }
 }

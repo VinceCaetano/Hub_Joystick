@@ -1,10 +1,10 @@
 using SharpDX.XInput;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D; 
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using Hub_Joystick.Components;
-using System.Diagnostics;
-using System.Drawing.Drawing2D;
 
 namespace Hub_Joystick
 {
@@ -22,8 +22,8 @@ namespace Hub_Joystick
             this.Resize += MainForm_Resize;
             this.Load += (sender, e) =>
             {
+                PositionMenus();
                 this.Invalidate(); 
-                PositionMenus();  
             };
             this.controller = new Controller(UserIndex.One);
             StartControllerMonitoring();
@@ -43,7 +43,7 @@ namespace Hub_Joystick
             }
 
             topMenu.Dock = DockStyle.Top;
-            appMenu.Dock = DockStyle.None; 
+            appMenu.Dock = DockStyle.None;
 
             topMenu.BringToFront();
             appMenu.BringToFront();
@@ -137,11 +137,10 @@ namespace Hub_Joystick
             }
         }
 
-
         private void MainForm_Resize(object sender, EventArgs e)
         {
             PositionMenus();
-            this.Invalidate(); 
+            this.Invalidate();
         }
 
         private void PositionMenus()
@@ -175,8 +174,9 @@ namespace Hub_Joystick
         {
             base.OnPaint(e);
 
-            Color startColor = Color.FromArgb(0, 61, 69); 
-            Color endColor = Color.FromArgb(161, 161, 161); 
+            
+            Color startColor = Color.FromArgb(0, 61, 69);
+            Color endColor = Color.FromArgb(161, 161, 161);
 
             using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, startColor, endColor, 90F))
             {

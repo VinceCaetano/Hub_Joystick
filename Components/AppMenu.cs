@@ -41,6 +41,8 @@ namespace Hub_Joystick.Components
             }
 
             this.Size = new Size(400, 150);
+            this.BackColor = Color.Transparent; 
+            PositionButtons();
         }
 
         public void MoveSelection(GamepadButtonFlags buttons)
