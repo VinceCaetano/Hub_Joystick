@@ -62,7 +62,7 @@ namespace Hub_Joystick.Components
                 Text = "icon power ", 
                 FlatAppearance = { BorderSize = 0 }
             };
-            powerButton.Click += (sender, e) => MessageBox.Show("Power clicked");
+            powerButton.Click += (sender, e) => MessageBox.Show(" desligar pc");
 
             controllerButton = new Button
             {
@@ -76,7 +76,7 @@ namespace Hub_Joystick.Components
                 Text = "icon controle", 
                 FlatAppearance = { BorderSize = 0 }
             };
-            controllerButton.Click += (sender, e) => MessageBox.Show("Controller clicked");
+            controllerButton.Click += (sender, e) => MessageBox.Show("C desligar controle");
 
             batteryButton = new Button
             {
@@ -90,7 +90,7 @@ namespace Hub_Joystick.Components
                 Text = " icon bateria", 
                 FlatAppearance = { BorderSize = 0 }
             };
-            batteryButton.Click += (sender, e) => MessageBox.Show("Battery clicked");
+            batteryButton.Click += (sender, e) => MessageBox.Show("bateria");
 
             timeButton = new Button
             {
@@ -103,7 +103,7 @@ namespace Hub_Joystick.Components
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatAppearance = { BorderSize = 0 }
             };
-            timeButton.Click += (sender, e) => MessageBox.Show("Time clicked");
+           
 
             this.Controls.Add(powerButton);
             this.Controls.Add(controllerButton);
