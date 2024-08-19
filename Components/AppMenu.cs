@@ -62,7 +62,8 @@ namespace Hub_Joystick.Components
             }
         }
 
-        private void HighlightSelectedButton()
+
+        public void HighlightSelectedButton()
         {
             foreach (var button in buttons)
             {
@@ -70,13 +71,23 @@ namespace Hub_Joystick.Components
                 button.Size = new Size(100, 100);
             }
 
-            if (buttons.Length > 0)
+            if (buttons.Length > 0 && selectedIndex >= 0 && selectedIndex < buttons.Length)
             {
                 var selectedButton = buttons[selectedIndex];
                 selectedButton.BackColor = Color.DarkGray;
-                selectedButton.Size = new Size(120, 120); 
+                selectedButton.Size = new Size(120, 120);
             }
         }
+
+        public void DeselectAllButtons()
+        {
+            foreach (var button in buttons) 
+            {
+                button.BackColor = Color.LightGray;
+                button.Size = new Size(100, 100);
+            }
+        }
+
 
         public void ExecuteAction()
         {

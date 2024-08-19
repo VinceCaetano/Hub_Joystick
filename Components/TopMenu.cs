@@ -54,31 +54,44 @@ namespace Hub_Joystick.Components
 
         public void MoveSelection(GamepadButtonFlags buttons)
         {
+            const int totalButtons = 4;
+
             if (buttons.HasFlag(GamepadButtonFlags.DPadLeft))
             {
-                selectedIndex = (selectedIndex - 1 + this.buttons.Length) % this.buttons.Length;
+                selectedIndex = (selectedIndex - 1 + totalButtons) % totalButtons;
+                HighlightSelectedButton();
             }
             else if (buttons.HasFlag(GamepadButtonFlags.DPadRight))
             {
-                selectedIndex = (selectedIndex + 1) % this.buttons.Length;
+                selectedIndex = (selectedIndex + 1) % totalButtons;
+                HighlightSelectedButton();
             }
-
-            HighlightSelectedButton();
         }
 
-        private void HighlightSelectedButton()
+
+        public void HighlightSelectedButton()
         {
             foreach (var button in buttons)
             {
                 button.BackColor = Color.LightGray;
-                button.Size = new Size(200, 75); 
+                button.Size = new Size(100, 100);
             }
 
-            if (buttons.Length > 0)
+            if (buttons.Length > 0 && selectedIndex >= 0 && selectedIndex < buttons.Length)
             {
                 var selectedButton = buttons[selectedIndex];
                 selectedButton.BackColor = Color.DarkGray;
-                selectedButton.Size = new Size(220, 85);
+                selectedButton.Size = new Size(120, 120);
+            }
+        }
+
+
+        public void DeselectAllButtons()
+        {
+            foreach (var button in buttons)
+            {
+                button.BackColor = Color.LightGray;
+                button.Size = new Size(100, 100);
             }
         }
 

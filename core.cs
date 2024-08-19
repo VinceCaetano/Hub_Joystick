@@ -36,13 +36,16 @@ namespace Hub_Joystick
                 this.Controls.Add(appMenu);
             }
 
-            topMenu.Dock = DockStyle.Top; 
-            appMenu.Dock = DockStyle.Fill; 
+            topMenu.Dock = DockStyle.Top;
+            appMenu.Dock = DockStyle.Fill;
 
             topMenu.BringToFront();
-            topMenu.Show(); 
-            appMenu.Hide(); 
+            appMenu.BringToFront();
+
+            topMenu.Show();
+            appMenu.Show();
         }
+
 
         private async void StartControllerMonitoring()
         {
@@ -84,19 +87,22 @@ namespace Hub_Joystick
             {
                 if (isTopMenu)
                 {
-                    SwitchToAppMenu();
+                    topMenu.DeselectAllButtons(); 
+                    isTopMenu = false;
+                    appMenu.HighlightSelectedButton(); 
                 }
             }
             else if (buttons.HasFlag(GamepadButtonFlags.DPadUp))
             {
                 if (!isTopMenu)
                 {
-                    SwitchToTopMenu();
+                    appMenu.DeselectAllButtons();
+                    isTopMenu = true;
+                    topMenu.HighlightSelectedButton(); 
                 }
             }
             else if (buttons.HasFlag(GamepadButtonFlags.X))
             {
-                //MessageBox.Show("btn ok");
                 CloseApplication();
             }
             else
@@ -113,6 +119,7 @@ namespace Hub_Joystick
         }
 
 
+
         private void ExecuteAction()
         {
             if (isTopMenu)
@@ -127,9 +134,10 @@ namespace Hub_Joystick
 
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            topMenu.PositionButtons();
+            topMenu.PositionButtons(); 
             appMenu.PositionButtons();
         }
+
 
         private void SwitchToTopMenu()
         {
