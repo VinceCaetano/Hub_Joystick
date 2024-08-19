@@ -11,6 +11,8 @@
   <ItemGroup>
     <None Remove="assets\disney.png" />
     <None Remove="assets\game_bar.png" />
+    <None Remove="assets\icon_controller.png" />
+    <None Remove="assets\icon_power.png" />
     <None Remove="assets\max.png" />
     <None Remove="assets\netflix.png" />
     <None Remove="assets\primevideo.png" />
@@ -22,6 +24,9 @@
     <Content Include="assets\disney.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="assets\icon_controller.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="assets\game_bar.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -29,6 +34,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\netflix.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\icon_power.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\primevideo.png">

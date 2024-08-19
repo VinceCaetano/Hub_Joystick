@@ -175,8 +175,8 @@ namespace Hub_Joystick
             base.OnPaint(e);
 
             
-            Color startColor = Color.FromArgb(0, 61, 69);
-            Color endColor = Color.FromArgb(161, 161, 161);
+            Color startColor = Color.FromArgb(161, 161, 161); 
+            Color endColor = Color.FromArgb(0, 61, 69);
 
             using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, startColor, endColor, 90F))
             {
