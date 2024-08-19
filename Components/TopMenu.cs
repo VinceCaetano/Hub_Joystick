@@ -1,8 +1,8 @@
 ﻿using SharpDX.XInput;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace Hub_Joystick.Components
 {
@@ -10,7 +10,9 @@ namespace Hub_Joystick.Components
     {
         private core core;
         private Button powerButton;
-        private Button turnOffNotebookButton;
+        private Button controllerButton;
+        private Button batteryButton;
+        private Button timeButton;
         private Button[] buttons;
         private int selectedIndex = 0;
 
@@ -24,32 +26,50 @@ namespace Hub_Joystick.Components
         {
             powerButton = new Button
             {
-                Size = new Size(200, 75),
-                Location = new Point(10, 10),
-                Text = "Turn Off Controller",
+                Size = new Size(100, 75),
+                Text = "Power",
                 BackColor = Color.LightGray,
                 FlatStyle = FlatStyle.Flat
             };
-            powerButton.FlatAppearance.BorderSize = 0; 
-            powerButton.Click += (sender, e) => MessageBox.Show("controle desligado");
+            powerButton.FlatAppearance.BorderSize = 0;
+            powerButton.Click += (sender, e) => MessageBox.Show("Power clicked");
 
-            turnOffNotebookButton = new Button
+            controllerButton = new Button
             {
-                Size = new Size(200, 75),
-                Location = new Point(powerButton.Right + 10, 10),
-                Text = "Turn Off Notebook",
+                Size = new Size(100, 75),
+                Text = "Controller",
                 BackColor = Color.LightGray,
                 FlatStyle = FlatStyle.Flat
             };
-            turnOffNotebookButton.FlatAppearance.BorderSize = 0;
-            turnOffNotebookButton.Click += (sender, e) => MessageBox.Show("fechar todas as abas e desligar notebook");
+            controllerButton.FlatAppearance.BorderSize = 0;
+            controllerButton.Click += (sender, e) => MessageBox.Show("Controller clicked");
+
+            batteryButton = new Button
+            {
+                Size = new Size(100, 75),
+                Text = "Battery",
+                BackColor = Color.LightGray,
+                FlatStyle = FlatStyle.Flat
+            };
+            batteryButton.FlatAppearance.BorderSize = 0;
+            batteryButton.Click += (sender, e) => MessageBox.Show("Battery clicked");
+
+            timeButton = new Button
+            {
+                Size = new Size(100, 75),
+                Text = "Time",
+                BackColor = Color.LightGray,
+                FlatStyle = FlatStyle.Flat
+            };
+            timeButton.FlatAppearance.BorderSize = 0;
+            timeButton.Click += (sender, e) => MessageBox.Show("Time clicked");
 
             this.Controls.Add(powerButton);
-            this.Controls.Add(turnOffNotebookButton);
+            this.Controls.Add(controllerButton);
+            this.Controls.Add(batteryButton);
+            this.Controls.Add(timeButton);
 
-            buttons = new[] { powerButton, turnOffNotebookButton };
-
-            this.Size = new Size(400, 100);
+            buttons = new[] { powerButton, controllerButton, batteryButton, timeButton };
         }
 
         public void MoveSelection(GamepadButtonFlags buttons)
@@ -68,36 +88,40 @@ namespace Hub_Joystick.Components
             }
         }
 
-
         public void HighlightSelectedButton()
         {
-            foreach (var button in buttons)
+            if (buttons != null)
             {
-                button.BackColor = Color.LightGray;
-                button.Size = new Size(100, 100);
-            }
+                foreach (var button in buttons)
+                {
+                    button.BackColor = Color.LightGray;
+                    button.Size = new Size(100, 75);
+                }
 
-            if (buttons.Length > 0 && selectedIndex >= 0 && selectedIndex < buttons.Length)
-            {
-                var selectedButton = buttons[selectedIndex];
-                selectedButton.BackColor = Color.DarkGray;
-                selectedButton.Size = new Size(120, 120);
+                if (selectedIndex >= 0 && selectedIndex < buttons.Length)
+                {
+                    var selectedButton = buttons[selectedIndex];
+                    selectedButton.BackColor = Color.DarkGray;
+                    selectedButton.Size = new Size(120, 90);
+                }
             }
         }
 
-
         public void DeselectAllButtons()
         {
-            foreach (var button in buttons)
+            if (buttons != null)
             {
-                button.BackColor = Color.LightGray;
-                button.Size = new Size(100, 100);
+                foreach (var button in buttons)
+                {
+                    button.BackColor = Color.LightGray;
+                    button.Size = new Size(100, 75);
+                }
             }
         }
 
         public void ExecuteAction()
         {
-            if (buttons.Length > 0)
+            if (buttons != null && buttons.Length > 0)
             {
                 buttons[selectedIndex].PerformClick();
             }
@@ -105,17 +129,30 @@ namespace Hub_Joystick.Components
 
         public void PositionButtons()
         {
-            int buttonWidth = this.Width / 4;
+            int buttonWidth = 100;
             int buttonHeight = 75;
             int spacing = 10;
 
-            powerButton.Size = new Size(buttonWidth, buttonHeight);
             powerButton.Location = new Point(10, 10);
+            controllerButton.Location = new Point(powerButton.Right + spacing, 10);
+            batteryButton.Location = new Point(this.Width - 200, 10);
+            timeButton.Location = new Point(this.Width - 100, 10);
+        }
 
-            turnOffNotebookButton.Size = new Size(buttonWidth, buttonHeight);
-            turnOffNotebookButton.Location = new Point(powerButton.Right + 10, 10);
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            PositionButtons();
+            this.Invalidate(); 
+        }
 
-            this.Width = this.Parent.ClientSize.Width;
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+            using (var brush = new LinearGradientBrush(this.ClientRectangle, Color.Blue, Color.DarkBlue, LinearGradientMode.Vertical))
+            {
+                e.Graphics.FillRectangle(brush, this.ClientRectangle);
+            }
         }
     }
 }

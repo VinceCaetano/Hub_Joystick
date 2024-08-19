@@ -1,9 +1,10 @@
+using SharpDX.XInput;
 using System;
-using System.Threading.Tasks;
+using System.Drawing;
 using System.Windows.Forms;
 using Hub_Joystick.Components;
-using SharpDX.XInput;
 using System.Diagnostics;
+using System.Drawing.Drawing2D;
 
 namespace Hub_Joystick
 {
@@ -19,6 +20,11 @@ namespace Hub_Joystick
             InitializeComponent();
             InitializeMenus();
             this.Resize += MainForm_Resize;
+            this.Load += (sender, e) =>
+            {
+                this.Invalidate(); 
+                PositionMenus();  
+            };
             this.controller = new Controller(UserIndex.One);
             StartControllerMonitoring();
         }
@@ -37,15 +43,16 @@ namespace Hub_Joystick
             }
 
             topMenu.Dock = DockStyle.Top;
-            appMenu.Dock = DockStyle.Fill;
+            appMenu.Dock = DockStyle.None; 
 
             topMenu.BringToFront();
             appMenu.BringToFront();
 
             topMenu.Show();
             appMenu.Show();
-        }
 
+            PositionMenus();
+        }
 
         private async void StartControllerMonitoring()
         {
@@ -87,9 +94,9 @@ namespace Hub_Joystick
             {
                 if (isTopMenu)
                 {
-                    topMenu.DeselectAllButtons(); 
+                    topMenu.DeselectAllButtons();
                     isTopMenu = false;
-                    appMenu.HighlightSelectedButton(); 
+                    appMenu.HighlightSelectedButton();
                 }
             }
             else if (buttons.HasFlag(GamepadButtonFlags.DPadUp))
@@ -98,7 +105,7 @@ namespace Hub_Joystick
                 {
                     appMenu.DeselectAllButtons();
                     isTopMenu = true;
-                    topMenu.HighlightSelectedButton(); 
+                    topMenu.HighlightSelectedButton();
                 }
             }
             else if (buttons.HasFlag(GamepadButtonFlags.X))
@@ -118,8 +125,6 @@ namespace Hub_Joystick
             }
         }
 
-
-
         private void ExecuteAction()
         {
             if (isTopMenu)
@@ -132,32 +137,51 @@ namespace Hub_Joystick
             }
         }
 
+
         private void MainForm_Resize(object sender, EventArgs e)
         {
-            topMenu.PositionButtons(); 
-            appMenu.PositionButtons();
+            PositionMenus();
+            this.Invalidate(); 
         }
 
+        private void PositionMenus()
+        {
+            topMenu.PositionButtons();
+            appMenu.PositionButtons();
+        }
 
         private void SwitchToTopMenu()
         {
             isTopMenu = true;
             topMenu.BringToFront();
-            topMenu.Show(); 
-            appMenu.Hide(); 
+            topMenu.Show();
+            appMenu.Hide();
         }
 
         private void SwitchToAppMenu()
         {
             isTopMenu = false;
             appMenu.BringToFront();
-            appMenu.Show(); 
-            topMenu.Hide(); 
+            appMenu.Show();
+            topMenu.Hide();
         }
 
         private void CloseApplication()
         {
             Application.Exit();
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Color startColor = Color.FromArgb(0, 61, 69); 
+            Color endColor = Color.FromArgb(161, 161, 161); 
+
+            using (LinearGradientBrush brush = new LinearGradientBrush(ClientRectangle, startColor, endColor, 90F))
+            {
+                e.Graphics.FillRectangle(brush, ClientRectangle);
+            }
         }
     }
 }

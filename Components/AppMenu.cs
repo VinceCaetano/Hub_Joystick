@@ -1,8 +1,8 @@
-﻿using System;
-using System.Diagnostics;
+﻿using SharpDX.XInput;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using SharpDX.XInput;
+using System.Diagnostics;
 
 namespace Hub_Joystick.Components
 {
@@ -22,8 +22,6 @@ namespace Hub_Joystick.Components
         {
             buttons = new Button[4];
 
-            this.BackColor = Color.LightGray;
-
             string[] imageFiles = { "game_bar.png", "steam.png", "netflix.png", "primevideo.png" };
             int buttonWidth = 100;
             int buttonHeight = 100;
@@ -34,12 +32,11 @@ namespace Hub_Joystick.Components
                 buttons[i] = new Button
                 {
                     Size = new Size(buttonWidth, buttonHeight),
-                    Location = new Point(spacing + (buttonWidth + spacing) * i, 10),
                     BackgroundImage = Image.FromFile(System.IO.Path.Combine(Application.StartupPath, "assets", imageFiles[i])),
                     BackgroundImageLayout = ImageLayout.Stretch,
                     FlatStyle = FlatStyle.Flat
                 };
-                buttons[i].FlatAppearance.BorderSize = 0; 
+                buttons[i].FlatAppearance.BorderSize = 0;
                 this.Controls.Add(buttons[i]);
             }
 
@@ -62,32 +59,30 @@ namespace Hub_Joystick.Components
             }
         }
 
-
         public void HighlightSelectedButton()
         {
             foreach (var button in buttons)
             {
-                button.BackColor = Color.LightGray;
+                button.BackColor = Color.Transparent;
                 button.Size = new Size(100, 100);
             }
 
             if (buttons.Length > 0 && selectedIndex >= 0 && selectedIndex < buttons.Length)
             {
                 var selectedButton = buttons[selectedIndex];
-                selectedButton.BackColor = Color.DarkGray;
+                selectedButton.BackColor = Color.FromArgb(255, 13, 90, 0); // Color for selected
                 selectedButton.Size = new Size(120, 120);
             }
         }
 
         public void DeselectAllButtons()
         {
-            foreach (var button in buttons) 
+            foreach (var button in buttons)
             {
-                button.BackColor = Color.LightGray;
+                button.BackColor = Color.Transparent;
                 button.Size = new Size(100, 100);
             }
         }
-
 
         public void ExecuteAction()
         {
@@ -124,22 +119,21 @@ namespace Hub_Joystick.Components
             }
         }
 
-
-
         public void PositionButtons()
         {
-            int buttonWidth = this.Width / buttons.Length;
+            int buttonWidth = 100;
             int buttonHeight = 100;
             int spacing = 10;
 
+            
+            int totalWidth = buttonWidth * buttons.Length + spacing * (buttons.Length - 1);
+            int startX = (this.Width - totalWidth) / 2;
+
             for (int i = 0; i < buttons.Length; i++)
             {
-                buttons[i].Size = new Size(buttonWidth - spacing, buttonHeight);
-                buttons[i].Location = new Point((buttonWidth * i) + spacing, 10);
+                buttons[i].Size = new Size(buttonWidth, buttonHeight);
+                buttons[i].Location = new Point(startX + i * (buttonWidth + spacing), this.Height / 2 - buttonHeight / 2);
             }
-
-            this.Width = this.Parent.ClientSize.Width;
-            this.Height = this.Parent.ClientSize.Height - this.Top;
         }
 
     }
