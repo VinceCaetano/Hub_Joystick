@@ -60,7 +60,5 @@ The HUB application is currently under construction. Features and functionality 
 
 For issues, suggestions, or contributions, please leave your suggetions at the issues tab.
 
-## License
 
-This project is licensed under the [MIT License](LICENSE).
 

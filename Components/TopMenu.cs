@@ -1,5 +1,6 @@
 ﻿using SharpDX.XInput;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -62,7 +63,7 @@ namespace Hub_Joystick.Components
                 Text = "icon power ", 
                 FlatAppearance = { BorderSize = 0 }
             };
-            powerButton.Click += (sender, e) => MessageBox.Show(" desligar pc");
+            powerButton.Click += PowerButton_Click;
 
             controllerButton = new Button
             {
@@ -114,6 +115,34 @@ namespace Hub_Joystick.Components
 
             this.BackColor = Color.Transparent;
             PositionButtons();
+        }
+        private void PowerButton_Click(object sender, EventArgs e)
+        {
+            CloseAllApplications();
+
+            ShutDownPC();
+        }
+        private void CloseAllApplications()
+        {
+            try
+            {
+                Process.Start("cmd.exe", "/c taskkill /f /fi \"STATUS eq RUNNING\"");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error closing applications: {ex.Message}");
+            }
+        }
+        private void ShutDownPC()
+        {
+            try
+            {
+                Process.Start("cmd.exe", "/c shutdown /s /t 0");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error shutting down PC: {ex.Message}");
+            }
         }
 
         private Image LoadImageFromFile(string path)
@@ -219,3 +248,4 @@ namespace Hub_Joystick.Components
         }
     }
 }
+
