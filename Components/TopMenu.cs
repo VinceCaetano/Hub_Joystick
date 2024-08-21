@@ -57,10 +57,10 @@ namespace Hub_Joystick.Components
                 Location = new Point(10, 10),
                 BackColor = Color.Transparent,
                 FlatStyle = FlatStyle.Flat,
-                Image = LoadImageFromFile(powerIconPath),
+                Image = ResizeImage(LoadImageFromFile(powerIconPath), new Size(50, 50)),
                 ImageAlign = ContentAlignment.MiddleCenter,
-                TextImageRelation = TextImageRelation.ImageBeforeText,
-                Text = "icon power ", 
+                TextImageRelation = TextImageRelation.ImageAboveText,
+                Text = string.Empty, 
                 FlatAppearance = { BorderSize = 0 }
             };
             powerButton.Click += PowerButton_Click;
@@ -68,30 +68,30 @@ namespace Hub_Joystick.Components
             controllerButton = new Button
             {
                 Size = new Size(100, 75),
-                Location = new Point(powerButton.Right + 10, 10),
+                Location = new Point(this.Width - 300, 10), 
                 BackColor = Color.Transparent,
                 FlatStyle = FlatStyle.Flat,
-                Image = LoadImageFromFile(controllerIconPath),
+                Image = ResizeImage(LoadImageFromFile(controllerIconPath), new Size(50, 50)),
                 ImageAlign = ContentAlignment.MiddleCenter,
-                TextImageRelation = TextImageRelation.ImageBeforeText,
-                Text = "icon controle", 
+                TextImageRelation = TextImageRelation.ImageAboveText,
+                Text = string.Empty, 
                 FlatAppearance = { BorderSize = 0 }
             };
-            controllerButton.Click += (sender, e) => MessageBox.Show("C desligar controle");
+            controllerButton.Click += (sender, e) => MessageBox.Show("Desligar controle");
 
             batteryButton = new Button
             {
                 Size = new Size(100, 75),
-                Location = new Point(this.Width - 200, 10),
+                Location = new Point(this.Width - 200, 10), 
                 BackColor = Color.Transparent,
                 FlatStyle = FlatStyle.Flat,
-                Image = LoadImageFromFile(batteryIconPath),
+                Image = ResizeImage(LoadImageFromFile(batteryIconPath), new Size(50, 50)),
                 ImageAlign = ContentAlignment.MiddleCenter,
-                TextImageRelation = TextImageRelation.ImageBeforeText,
-                Text = " icon bateria", 
+                TextImageRelation = TextImageRelation.ImageAboveText,
+                Text = string.Empty, 
                 FlatAppearance = { BorderSize = 0 }
             };
-            batteryButton.Click += (sender, e) => MessageBox.Show("bateria");
+            batteryButton.Click += (sender, e) => MessageBox.Show("Nível da bateria");
 
             timeButton = new Button
             {
@@ -104,7 +104,6 @@ namespace Hub_Joystick.Components
                 Font = new Font("Arial", 12, FontStyle.Bold),
                 FlatAppearance = { BorderSize = 0 }
             };
-           
 
             this.Controls.Add(powerButton);
             this.Controls.Add(controllerButton);
@@ -114,8 +113,15 @@ namespace Hub_Joystick.Components
             buttons = new Button[] { powerButton, controllerButton, batteryButton, timeButton };
 
             this.BackColor = Color.Transparent;
+
             PositionButtons();
         }
+
+        private Image ResizeImage(Image img, Size size)
+        {
+            return (Image)(new Bitmap(img, size));
+        }
+
         private void PowerButton_Click(object sender, EventArgs e)
         {
             CloseAllApplications();
