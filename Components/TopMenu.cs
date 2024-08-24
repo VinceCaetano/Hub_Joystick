@@ -21,7 +21,7 @@ namespace Hub_Joystick.Components
         private string powerIconPath = @"assets\icon_power.png";
         private string controllerIconPath = @"assets\icon_controller.png";
         private string batteryIconPath = @"assets\icon_battery.png";
-        private string timeIconPath = @"assets\icon_time.png";
+        
 
         public TopMenu(core form)
         {
