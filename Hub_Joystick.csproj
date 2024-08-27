@@ -14,6 +14,7 @@
     <None Remove="assets\icon_battery.png" />
     <None Remove="assets\icon_controller.png" />
     <None Remove="assets\icon_power.png" />
+    <None Remove="assets\joystick.png" />
     <None Remove="assets\max.png" />
     <None Remove="assets\netflix.png" />
     <None Remove="assets\primevideo.png" />
@@ -32,6 +33,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\game_bar.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="assets\joystick.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="assets\max.png">

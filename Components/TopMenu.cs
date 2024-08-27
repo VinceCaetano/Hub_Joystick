@@ -19,7 +19,7 @@ namespace Hub_Joystick.Components
         private System.Windows.Forms.Timer timeUpdateTimer; 
 
         private string powerIconPath = @"assets\icon_power.png";
-        private string controllerIconPath = @"assets\icon_controller.png";
+        private string controllerIconPath = @"assets\joystick.png";
         private string batteryIconPath = @"assets\icon_battery.png";
         
 
