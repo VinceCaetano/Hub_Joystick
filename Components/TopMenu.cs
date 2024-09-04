@@ -77,7 +77,7 @@ namespace Hub_Joystick.Components
                 Text = string.Empty, 
                 FlatAppearance = { BorderSize = 0 }
             };
-            controllerButton.Click += (sender, e) => MessageBox.Show("Desligar controle");
+            controllerButton.Click += (sender, e) => MessageBox.Show("Desligar");
 
             batteryButton = new Button
             {
@@ -91,7 +91,7 @@ namespace Hub_Joystick.Components
                 Text = string.Empty, 
                 FlatAppearance = { BorderSize = 0 }
             };
-            batteryButton.Click += (sender, e) => MessageBox.Show("Nível da bateria");
+            batteryButton.Click += (sender, e) => MessageBox.Show("bateria");
 
             timeButton = new Button
             {
